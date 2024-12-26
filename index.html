@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="uz">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inglizcha Fe'llarni Yodlash</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: #f4f7fc;
+        text-align: center;
+        margin-top: 50px;
+      }
+
+      .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+      }
+
+      .card {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 250px;
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      }
+
+      .card h3 {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      .card p {
+        font-size: 20px;
+        color: #555;
+        margin: 5px 0;
+      }
+
+      .card .verb {
+        font-weight: bold;
+        font-size: 20px;
+        color: #007bff;
+      }
+
+      .card .translation {
+        font-size: 20px;
+        color: #28a745;
+        margin-top: 10px;
+      }
+
+      .next-button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-top: 20px;
+      }
+
+      .next-button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card-container" id="cards-container"></div>
+
+    <button class="next-button" onclick="nextWord()">Keyingi so'z</button>
+
+    <script>
+      const verbs = [
+        ["beat", "beat", "beaten", "urmoq"],
+        ["drive", "drove", "driven", "haydamoq"],
+        ["ride", "rode", "ridden", "minmoq"],
+        ["bite", "bit", "bitten", "tishlamoq"],
+        ["choose", "chose", "chosen", "tanlamoq"],
+        ["fall", "fell", "fallen", "tushib ketmoq"],
+        ["forbid", "forbade", "forbidden", "taqiqlamoq"],
+        ["forget", "forgot", "forgotten", "unutmoq"],
+        ["forgive", "forgave", "forgiven", "kechirmoq"],
+        ["freeze", "froze", "frozen", "muzlamoq"],
+        ["give", "gave", "given", "bermoq"],
+        ["think", "thought", "thought", "o'ylamoq"],
+        ["bring", "brought", "brought", "olib kelmoq"],
+        ["buy", "bought", "bought", "sotib olmoq"],
+        ["fight", "fought", "fought", "urushmoq"],
+        ["seek", "sought", "sought", "qidirmoq"],
+        ["catch", "caught", "caught", "ushlab olmoq"],
+        ["teach", "taught", "taught", "o'qitmoq"],
+        ["cut", "cut", "cut", "qirqmoq"],
+        ["cost", "cost", "cost", "turmoq (narx)"],
+        ["put", "put", "put", "qo'ymoq"],
+        ["shut", "shut", "shut", "yopmoq"],
+        ["set", "set", "set", "o'rnatmoq"],
+        ["split", "split", "split", "ajralmoq"],
+        ["spit", "spit", "spit", "tupurmoq"],
+        ["bet", "bet", "bet", "garov o‘ynamoq"],
+        ["broadcast", "broadcast", "broadcast", "uzatmoq"],
+        ["hit", "hit", "hit", "urmoq"],
+        ["burst", "burst", "burst", "yorilmoq"],
+        ["hurt", "hurt", "hurt", "shikast yetkazmoq"],
+        ["let", "let", "let", "ruxsat bermoq"],
+        ["spread", "spread", "spread", "tarqalmoq"],
+        ["read", "read", "read", "o'qimoq"],
+        ["send", "sent", "sent", "jo'natmoq"],
+        ["build", "built", "built", "qurmoq"],
+        ["deal", "dealt", "dealt", "taqsimlamoq"],
+        ["spend", "spent", "spent", "sarflamoq"],
+        ["learn", "learnt", "learnt", "o'rganmoq"],
+        ["mean", "meant", "meant", "anglatmoq"],
+        ["feel", "felt", "felt", "his qilmoq"],
+        ["keep", "kept", "kept", "saqlamoq"],
+        ["bend", "bent", "bent", "egmoq"],
+        ["creep", "crept", "crept", "emaklamoq"],
+        ["dig", "dug", "dug", "qazimoq"],
+        ["feed", "fed", "fed", "boqmoq"],
+        ["find", "found", "found", "topmoq"],
+        ["flee", "fled", "fled", "qochmoq"],
+        ["get", "got", "gotten", "olmoq"],
+        ["hang", "hung", "hung", "osmoq"],
+        ["have", "had", "had", "bo'lmoq"],
+        ["hear", "heard", "heard", "eshitmoq"],
+        ["hold", "held", "held", "ushlamoq"],
+        ["lay", "laid", "laid", "qo'ymoq"],
+        ["keep", "kept", "kept", "saqlamoq"],
+        ["kneel", "knelt", "knelt", "tizzalamoq"],
+        ["lead", "led", "led", "yataklamoq"],
+        ["leave", "left", "left", "qoldirmoq"],
+        ["lend", "lent", "lent", "qarz bermoq"],
+        ["light", "lit", "lit", "yoqmoq"],
+        ["lose", "lost", "lost", "yo'qotmoq"],
+        ["meet", "met", "met", "uchrashmoq"],
+        ["pay", "paid", "paid", "to'lamoq"],
+        ["say", "said", "said", "aytmoq"],
+        ["sell", "sold", "sold", "sotmoq"],
+        ["sew", "sewed", "sewed", "tikmoq"],
+        ["shoot", "shot", "shot", "otmoq"],
+        ["sit", "sat", "sat", "o'tirmoq"],
+        ["sleep", "slept", "slept", "uxlamoq"],
+        ["slide", "slid", "slid", "sirpanmoq"],
+        ["stand", "stood", "stood", "turmoq"],
+        ["sting", "stung", "stung", "chaqmoq"],
+        ["strike", "struck", "struck", "ish tashlamoq"],
+        ["sweep", "swept", "swept", "supurmoq"],
+        ["swing", "swung", "swung", "tebranmoq"],
+        ["tell", "told", "told", "aytmoq"],
+        ["understand", "understood", "understood", "tushunmoq"],
+        ["weep", "wept", "wept", "yig'lamoq"],
+        ["win", "won", "won", "yutmoq"],
+        ["come", "came", "come", "kelmoq"],
+        ["become", "became", "become", "bo'lmoq"],
+        ["eat", "ate", "eaten", "yemoq"],
+        ["be", "was", "been", "bo'lmoq"],
+        ["see", "saw", "seen", "ko'rmoq"],
+        ["make", "made", "made", "qilmoq"],
+        ["blow", "blew", "blown", "puflamoq"],
+        ["do", "did", "done", "qilmoq"],
+        ["draw", "drew", "drawn", "chizmoq"],
+        ["lie", "lay", "lain", "yotmoq"],
+        ["fly", "flew", "flown", "uchmoq"],
+        ["go", "went", "gone", "bormoq"],
+        ["grow", "grew", "grown", "o'smoq"],
+        ["hide", "hid", "hidden", "yashirmoq"],
+        ["know", "knew", "known", "bilmoq"],
+        ["rise", "rose", "risen", "ko'tarilmoq"],
+        ["shake", "shook", "shaken", "titratmoq"],
+        ["swear", "swore", "sworn", "so'kmoq"],
+        ["take", "took", "taken", "olmoq"],
+        ["tear", "tore", "torn", "yirtmoq"],
+        ["throw", "threw", "thrown", "tashlamoq"],
+        ["wear", "wore", "worn", "kiymoq"],
+      ];
+
+      let currentIndex = 0;
+
+      function displayWord() {
+        const verb = verbs[currentIndex];
+        const verbInBase = verb[0];
+        const verbPast = verb[1];
+        const verbPastParticiple = verb[2];
+        const translation = verb[3];
+
+        const cardHTML = `
+                <div class="card">
+                    <h3>Verb: ${verbInBase}</h3>
+                    <p><b></b> ${verbPast}</p>
+                    <p><b></b> ${verbPastParticiple}</p>
+                    <p class="translation"><b>Tarjimasi:</b> ${translation}</p>
+                </div>
+            `;
+
+        document.getElementById("cards-container").innerHTML = cardHTML;
+      }
+
+      function nextWord() {
+        currentIndex = (currentIndex + 1) % verbs.length;
+        displayWord();
+      }
+
+      // Start the game
+      displayWord();
+    </script>
+  </body>
+</html>
